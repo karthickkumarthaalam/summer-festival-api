@@ -12,9 +12,6 @@ const sendOtpEmail = async (toEmail, toName, otp) => {
             auth: {
                 user: "emailapikey",
                 pass: process.env.ZEPTO_API_KEY,
-            },
-            tls: {
-                rejectUnauthorized: false
             }
         });
 

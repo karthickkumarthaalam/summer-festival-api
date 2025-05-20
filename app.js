@@ -26,17 +26,23 @@ if (process.env.NODE_ENV === "development") {
     });
 }
 
+const dashboardRoutes = require("./routes/dashboardRoutes");
 const useRoutes = require("./routes/userRoutes");
 const artistRoutes = require("./routes/artistRoutes");
 const topEventOfferRoutes = require("./routes/topEventOffersRouters");
 const bannerRoutes = require("./routes/bannerRoutes");
+const newsRoutes = require("./routes/newsRoutes");
+const contactUsRoutes = require("./routes/contactUsRoutes");
 
 
+app.use("/summer-festival/api/dashboard", dashboardRoutes);
 app.use("/summer-festival/api/auth", useRoutes);
 app.use("/summer-festival/api/artist", artistRoutes);
 app.use("/summer-festival/api/top-event-offers", topEventOfferRoutes);
 app.use("/summer-festival/api/banner", bannerRoutes);
-app.use('/summer-festival/api/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/summer-festival/api/uploads", express.static(path.join(__dirname, 'uploads')));
+app.use("/summer-festival/api/news", newsRoutes);
+app.use("/summer-festival/api/contactus", contactUsRoutes);
 
 
 const PORT = process.env.PORT || 5000;

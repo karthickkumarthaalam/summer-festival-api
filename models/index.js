@@ -25,9 +25,11 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.User = require("./user")(sequelize, Sequelize);
-db.Artist = require("./artist")(sequelize, Sequelize); 4;
+db.Artist = require("./artist")(sequelize, Sequelize);
 db.Banner = require("./banner")(sequelize, Sequelize);
 db.TopEventOffers = require("./topEventOffers")(sequelize, Sequelize);
+db.News = require("./news")(sequelize, Sequelize);
+db.ContactUs = require("./contactUs")(sequelize, Sequelize);
 
 
 module.exports = db;
