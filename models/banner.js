@@ -19,9 +19,16 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         language: {
-            type: DataTypes.JSON,
+            type: DataTypes.TEXT,
             allowNull: false,
-            defaultValue: ["All"]
+            defaultValue: '["All"]',
+            get() {
+                const value = this.getDataValue('language');
+                return value ? JSON.parse(value) : [];
+            },
+            set(value) {
+                this.setDataValue('language', JSON.stringify(value));
+            }
         }
     });
 

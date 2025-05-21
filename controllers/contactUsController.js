@@ -14,6 +14,7 @@ exports.upsertContactUs = async (req, res) => {
             facebook_url,
             instagram_url,
             pinterest_url,
+            tiktok_url
         } = req.body;
 
         const existingContact = await ContactUs.findOne({ where: { id: 1 } });
@@ -30,6 +31,7 @@ exports.upsertContactUs = async (req, res) => {
                 facebook_url,
                 instagram_url,
                 pinterest_url,
+                tiktok_url
             });
 
             return res.status(200).json({ status: "success", data: updatedContact });
@@ -46,6 +48,7 @@ exports.upsertContactUs = async (req, res) => {
                 facebook_url,
                 instagram_url,
                 pinterest_url,
+                tiktok_url
             });
 
             return res.status(201).json({ status: "success", data: newContact });
@@ -59,12 +62,12 @@ exports.upsertContactUs = async (req, res) => {
 exports.getContactUs = async (req, res) => {
     try {
         const contactDetails = await ContactUs.findOne({ where: { id: 1 } });
-
         return res.status(200).json({
             status: "success",
             data: contactDetails || null,
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             status: "error",
             message: error.message,

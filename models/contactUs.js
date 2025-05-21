@@ -8,12 +8,42 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
         marketing_mobile_numbers: {
-            type: DataTypes.JSON,
+            type: DataTypes.TEXT,
             allowNull: true,
+            get() {
+                const value = this.getDataValue('marketing_mobile_numbers');
+                if (!value) return null;
+                if (typeof value === 'string') {
+                    try {
+                        return JSON.parse(value);
+                    } catch (e) {
+                        return value;
+                    }
+                }
+                return value;
+            },
+            set(value) {
+                this.setDataValue('marketing_mobile_numbers', JSON.stringify(value));
+            }
         },
         enquiry_mobile_numbers: {
-            type: DataTypes.JSON,
+            type: DataTypes.TEXT,
             allowNull: true,
+            get() {
+                const value = this.getDataValue('enquiry_mobile_numbers');
+                if (!value) return null;
+                if (typeof value === 'string') {
+                    try {
+                        return JSON.parse(value);
+                    } catch (e) {
+                        return value;
+                    }
+                }
+                return value;
+            },
+            set(value) {
+                this.setDataValue('enquiry_mobile_numbers', JSON.stringify(value));
+            }
         },
         marketing_email: {
             type: DataTypes.STRING,
@@ -40,6 +70,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
         },
         pinterest_url: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        tiktok_url: {
             type: DataTypes.STRING,
             allowNull: true
         }

@@ -30,6 +30,15 @@ db.Banner = require("./banner")(sequelize, Sequelize);
 db.TopEventOffers = require("./topEventOffers")(sequelize, Sequelize);
 db.News = require("./news")(sequelize, Sequelize);
 db.ContactUs = require("./contactUs")(sequelize, Sequelize);
+db.ShowLineup = require("./showLineUp")(sequelize, Sequelize);
+db.Show = require("./shows")(sequelize, Sequelize);
+db.ShowArtist = require("./showArtist")(sequelize, Sequelize);
+
+Object.keys(db).forEach((modelName) => {
+    if (db[modelName].associate) {
+        db[modelName].associate(db);
+    }
+});
 
 
 module.exports = db;
