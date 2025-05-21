@@ -43,6 +43,12 @@ exports.getShowArtists = async (req, res) => {
             where.show_id = req.query.show_id;
         }
 
+        if (req.query.search) {
+            where.name = {
+                [Op.like]: `%${req.query.search}%`
+            };
+        }
+
         const result = await pagination(ShowArtist, {
             page,
             limit,

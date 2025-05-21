@@ -37,6 +37,12 @@ exports.getShows = async (req, res) => {
             where.lineup_id = req.query.lineup_id;
         }
 
+        if (req.query.search) {
+            where.title = {
+                [Op.like]: `%${req.query.search}%`
+            };
+        }
+
         const result = await pagination(Show, {
             page,
             limit,
