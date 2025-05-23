@@ -20,6 +20,6 @@ module.exports = {
         password: process.env.PROD_DB_PASS,
         database: process.env.PROD_DB_NAME,
         host: process.env.PROD_DB_HOST,
-        dialact: "mysql"
+        dialect: "mysql"
     }
 };

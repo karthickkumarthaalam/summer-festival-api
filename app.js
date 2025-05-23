@@ -26,6 +26,10 @@ if (process.env.NODE_ENV === "development") {
     });
 }
 
+app.get("/", (req, res) => {
+    res.json({ status: "success", message: "application working perfectly" });
+});
+
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const useRoutes = require("./routes/userRoutes");
 const artistRoutes = require("./routes/artistRoutes");
@@ -51,7 +55,7 @@ app.use("/summer-festival/api/shows", showRoutes);
 app.use("/summer-festival/api/show-artist", showArtistRoutes);
 
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
