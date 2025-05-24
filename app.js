@@ -10,7 +10,9 @@ const app = express();
 
 
 app.use(cors({
-    origin: process.env.CLIENT_LINK,
+    origin: (origin, callback) => {
+        callback(null, origin);
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["content-type", "Authorization"],
