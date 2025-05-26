@@ -7,10 +7,10 @@ const { Artist } = db;
 
 exports.createArtist = async (req, res) => {
     try {
-        const { artist_name, description, facebook_url, instagram_url, pinterest_url, twitter_url, linkedin_url, status, language } = req.body;
+        const { artist_name, role, description, facebook_url, instagram_url, pinterest_url, twitter_url, linkedin_url, status, language } = req.body;
         const image_url = req.file?.path;
 
-        if (!artist_name || !description || !image_url) {
+        if (!artist_name || !description || !image_url || !role) {
             return res.status(400).json({ status: "error", message: "All fields are required" });
         }
 
@@ -21,6 +21,7 @@ exports.createArtist = async (req, res) => {
 
         const artist = await Artist.create({
             artist_name,
+            role,
             description,
             image: image_url,
             status: status || "active",
@@ -109,7 +110,7 @@ exports.updateArtist = async (req, res) => {
             return res.status(404).json({ status: "error", message: "Artist not found" });
         }
 
-        const { artist_name, description, status, facebook_url, instagram_url, pinterest_url, twitter_url, linkedin_url, language } = req.body;
+        const { artist_name, role, description, status, facebook_url, instagram_url, pinterest_url, twitter_url, linkedin_url, language } = req.body;
 
         if (req.file) {
             if (artist.image && fs.existsSync(artist.image)) {
@@ -119,6 +120,7 @@ exports.updateArtist = async (req, res) => {
         }
 
         artist.artist_name = artist_name || artist.artist_name;
+        artist.role = role || artist.role;
         artist.description = description || artist.description;
         artist.status = status || artist.status;
         artist.facebook_url = facebook_url || artist.facebook_url;
