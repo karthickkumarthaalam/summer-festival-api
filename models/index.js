@@ -33,6 +33,7 @@ db.ContactUs = require("./contactUs")(sequelize, Sequelize);
 db.ShowLineup = require("./showLineUp")(sequelize, Sequelize);
 db.Show = require("./shows")(sequelize, Sequelize);
 db.ShowArtist = require("./showArtist")(sequelize, Sequelize);
+db.Enquiry = require("./enquiry")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {

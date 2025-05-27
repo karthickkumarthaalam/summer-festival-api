@@ -42,6 +42,7 @@ const contactUsRoutes = require("./routes/contactUsRoutes");
 const showLineUpRoutes = require("./routes/showLineupRoutes");
 const showRoutes = require("./routes/showRoutes");
 const showArtistRoutes = require("./routes/showArtistsRoutes");
+const enquiriesRoutes = require("./routes/enquiryRoutes");
 
 
 app.use("/summer-festival/api/dashboard", dashboardRoutes);
@@ -55,6 +56,7 @@ app.use("/summer-festival/api/contactus", contactUsRoutes);
 app.use("/summer-festival/api/showlineup", showLineUpRoutes);
 app.use("/summer-festival/api/shows", showRoutes);
 app.use("/summer-festival/api/show-artist", showArtistRoutes);
+app.use("/summer-festival/api/enquiry", enquiriesRoutes);
 
 
 const PORT = process.env.PORT || 3000;
