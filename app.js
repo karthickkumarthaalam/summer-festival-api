@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
-    db.sequelize.sync({alter : true}).then(() => {
+    db.sequelize.sync().then(() => {
         console.log("Database synchronized (alter mode)");
     });
 
