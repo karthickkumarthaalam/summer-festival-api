@@ -22,11 +22,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-if (process.env.NODE_ENV === "development") {
-    db.sequelize.sync().then(() => {
+
+    db.sequelize.sync({alter : true}).then(() => {
         console.log("Database synchronized (alter mode)");
     });
-}
+
 
 app.get("/", (req, res) => {
     res.json({ status: "success", message: "application working perfectly" });
