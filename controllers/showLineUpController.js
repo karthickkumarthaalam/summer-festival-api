@@ -91,6 +91,42 @@ exports.getShowLineupById = async (req, res) => {
     }
 };
 
+exports.getShowLineupByDate = async (req, res) => {
+    try {
+
+        const { date } = req.query;
+
+        if (!date) {
+            return res.status(400).json({ status: "error", message: "Date is required" });
+        }
+
+        const lineup = await ShowLineup.findOne({
+            where: { date },
+            include: [
+                {
+                    model: Show,
+                    as: "shows",
+                    include: [
+                        {
+                            model: ShowArtist,
+                            as: "artists",
+                        }
+                    ]
+                }
+            ]
+        });
+
+        if (!lineup) {
+            return res.status(404).json({ status: "error", message: "Show lineup not found" });
+        }
+
+        res.status(200).json({ status: "success", data: lineup });
+
+    } catch (error) {
+        res.status(500).json({ status: "error", message: "Server error while fetching show lineup by date" });
+    }
+};
+
 exports.updateShowLineup = async (req, res) => {
     try {
         const { id } = req.params;

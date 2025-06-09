@@ -3,6 +3,8 @@ const router = express.Router();
 const showLineUpController = require("../controllers/showLineUpController");
 
 
+router.get("/by-date", showLineUpController.getShowLineupByDate);
+
 router.post("/", showLineUpController.createShowLineUp);
 router.get("/", showLineUpController.getShowLineups);
 router.get("/:id", showLineUpController.getShowLineupById);
