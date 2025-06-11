@@ -2,33 +2,33 @@ const db = require("../models");
 const { Op } = require("sequelize");
 const pagination = require("../utils/pagination");
 
-const { Enquiry } = db;
+const { StallEnquiry } = db;
 
-exports.createEnquiry = async (req, res) => {
+
+exports.createStallEnquiry = async (req, res) => {
     try {
-        const { name, phone, email, subject, message } = req.body;
-        if (!name || !phone || !email || !subject || !message) {
+        const { shop_name, person_name, email, phone, category } = req.body;
+        if (!shop_name || !person_name || !email || !phone || !category) {
             return res.status(400).json({
                 status: "error",
                 message: "All fields are required"
             });
         }
 
-        const newEnquiry = await Enquiry.create({
-            name,
-            phone,
+        const newStallEnquiry = await StallEnquiry.create({
+            shop_name,
+            person_name,
             email,
-            subject,
-            message,
+            phone,
+            category,
             status: "pending"
         });
 
         res.status(201).json({
             status: "success",
             message: "Enquiry Posted successfully",
-            newEnquiry
+            newStallEnquiry
         });
-
     } catch (error) {
         res.status(500).json({
             status: "error",
@@ -39,7 +39,7 @@ exports.createEnquiry = async (req, res) => {
 };
 
 
-exports.getEnquiries = async (req, res) => {
+exports.getStallEnquiries = async (req, res) => {
     try {
 
         const page = parseInt(req.query.page) || 1;
@@ -49,18 +49,17 @@ exports.getEnquiries = async (req, res) => {
 
         if (req.query.search) {
             const searchValue = `%${req.query.search}%`;
-
             where = {
                 [Op.or]: [
-                    { name: { [Op.like]: searchValue } },
-                    { subject: { [Op.like]: searchValue } },
+                    { shop_name: { [Op.like]: searchValue } },
+                    { person_name: { [Op.like]: searchValue } },
                     { email: { [Op.like]: searchValue } },
                     { phone: { [Op.like]: searchValue } }
                 ]
             };
         }
 
-        const result = await pagination(Enquiry, {
+        const result = await pagination(StallEnquiry, {
             page,
             limit,
             where
@@ -81,11 +80,12 @@ exports.getEnquiries = async (req, res) => {
     }
 };
 
-exports.getEnquryById = async (req, res) => {
+
+exports.getStallEnquryById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const enquiry = await Enquiry.findByPk(id);
+        const enquiry = await StallEnquiry.findByPk(id);
 
         if (!enquiry) {
             return res.status(404).json({
@@ -120,7 +120,7 @@ exports.updateStatus = async (req, res) => {
                 message: "Invalid status value"
             });
         }
-        const enquiry = await Enquiry.findByPk(id);
+        const enquiry = await StallEnquiry.findByPk(id);
         if (!enquiry) {
             return res.status(404).json({
                 status: "error",
