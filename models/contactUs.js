@@ -76,6 +76,14 @@ module.exports = (sequelize, DataTypes) => {
         tiktok_url: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        twitter_url: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        spotify_url: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     }, {
         tableName: "contact_us",

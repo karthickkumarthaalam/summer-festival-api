@@ -14,7 +14,9 @@ exports.upsertContactUs = async (req, res) => {
             facebook_url,
             instagram_url,
             pinterest_url,
-            tiktok_url
+            tiktok_url,
+            twitter_url,
+            spotify_url
         } = req.body;
 
         const existingContact = await ContactUs.findOne({ where: { id: 1 } });
@@ -31,7 +33,9 @@ exports.upsertContactUs = async (req, res) => {
                 facebook_url,
                 instagram_url,
                 pinterest_url,
-                tiktok_url
+                tiktok_url,
+                twitter_url,
+                spotify_url
             });
 
             return res.status(200).json({ status: "success", data: updatedContact });
@@ -48,7 +52,9 @@ exports.upsertContactUs = async (req, res) => {
                 facebook_url,
                 instagram_url,
                 pinterest_url,
-                tiktok_url
+                tiktok_url,
+                twitter_url,
+                spotify_url
             });
 
             return res.status(201).json({ status: "success", data: newContact });
