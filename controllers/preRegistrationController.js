@@ -1,15 +1,93 @@
 const db = require("../models");
 const { Op } = require("sequelize");
 const pagination = require("../utils/pagination");
+const sendSms = require("../utils/sendSms");
 
-const { PreRegistration } = db;
+const { PreRegistration, OtpVerification } = db;
 
-exports.createPreRegistration = async (req, res) => {
+exports.sendOtp = async (req, res) => {
     try {
         const { name, email, phone, country } = req.body;
 
         if (!name || !email || !phone || !country) {
             return res.status(400).json({ status: "error", message: "All fields are required" });
+        }
+
+        const existingRegistration = await PreRegistration.findOne({
+            where: {
+                [Op.or]: {
+                    email: email,
+                    phone: phone
+                }
+            }
+        });
+
+        if (existingRegistration) {
+            return res.status(400).json({
+                status: "error",
+                message: "Pre-Registration with this email or phone already exists"
+            });
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const message = `Your OTP for Thaalam Summer festival Pre-Registration is: ${otp}`;
+
+        const smsResult = await sendSms(phone, message);
+
+        if (!smsResult.success) {
+            return res.status(500).json({ status: "error", message: "Failed to send OTP via SMS" });
+        }
+
+        await OtpVerification.destroy({ where: { phone } });
+
+        await OtpVerification.create({ phone, otp });
+
+        res.status(200).json({
+            status: "success",
+            message: `OTP sent to ${phone}`
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: "Failed to send OTP"
+        });
+    }
+};
+
+exports.createPreRegistration = async (req, res) => {
+    try {
+        const { name, email, phone, country, otp } = req.body;
+
+        if (!name || !email || !phone || !country || !otp) {
+            return res.status(400).json({ status: "error", message: "All fields are required" });
+        }
+
+        const existingRegistration = await PreRegistration.findOne({
+            where: {
+                [Op.or]: {
+                    email: email,
+                    phone: phone
+                }
+            }
+        });
+
+        if (existingRegistration) {
+            return res.status(400).json({
+                status: "error",
+                message: "Pre-Registration with this email or phone already exists"
+            });
+        }
+
+        const otpRecord = await OtpVerification.findOne({
+            where: { phone, otp }
+        });
+
+        if (!otpRecord) {
+            return res.status(400).json({
+                status: "error",
+                message: "Invalid or expired OTP"
+            });
         }
 
         const newPreRegistration = await PreRegistration.create({
@@ -18,6 +96,11 @@ exports.createPreRegistration = async (req, res) => {
             phone,
             country
         });
+
+        await OtpVerification.destroy({ where: { phone } });
+
+        const message = "Thank you for Pre-Registering for Thaalam Summer Festival! We will keep you updated with the latest information.";
+        await sendSms(phone, message);
 
         res.status(201).json({
             status: "success",

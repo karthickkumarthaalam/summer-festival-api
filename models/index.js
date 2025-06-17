@@ -36,6 +36,7 @@ db.ShowArtist = require("./showArtist")(sequelize, Sequelize);
 db.Enquiry = require("./enquiry")(sequelize, Sequelize);
 db.StallEnquiry = require("./stallEnquiry")(sequelize, Sequelize);
 db.PreRegistration = require("./preRegistration")(sequelize, Sequelize);
+db.OtpVerification = require("./otpVerification")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {
