@@ -196,7 +196,7 @@ exports.exportPreRegistrations = async (req, res) => {
             Name: reg.name,
             Country: reg.country,
             Email: reg.email,
-            phone: reg.phone
+            Phone: reg.phone
         }));
 
         await exportExcelFile(res, {
