@@ -1,6 +1,7 @@
 const db = require("../models");
 const { Op } = require("sequelize");
 const pagination = require("../utils/pagination");
+const exportExcelFile = require("../utils/exportExcel");
 
 const { Enquiry } = db;
 
@@ -141,6 +142,47 @@ exports.updateStatus = async (req, res) => {
             status: "error",
             message: "Unable to update enquiry status",
             error: error.message
+        });
+    }
+};
+
+
+exports.exportEnquiries = async (req, res) => {
+    try {
+        const enquiries = await Enquiry.findAll();
+
+        const records = enquiries.map((enq, index) => ({
+            SI: index + 1,
+            Name: enq.name,
+            Phone: enq.phone,
+            Email: enq.email,
+            Subject: enq.subject,
+            Message: enq.message,
+            Status: enq.status,
+            "Created At": enq.createdAt.toLocaleString(),
+        }));
+
+        await exportExcelFile(res, {
+            fileName: "Enquiries",
+            sheetName: "Enquiries",
+            columns: [
+                { header: "SI", key: "SI" },
+                { header: "Name", key: "Name" },
+                { header: "Phone", key: "Phone" },
+                { header: "Email", key: "Email" },
+                { header: "Subject", key: "Subject" },
+                { header: "Message", key: "Message" },
+                { header: "Status", key: "Status" },
+                { header: "Created At", key: "Created At" },
+            ],
+            records,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: "Failed to export Enquiries",
+            error: error.message,
         });
     }
 };

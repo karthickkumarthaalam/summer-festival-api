@@ -2,6 +2,7 @@ const db = require("../models");
 const { Op } = require("sequelize");
 const pagination = require("../utils/pagination");
 const sendSms = require("../utils/sendSms");
+const exportExcelFile = require("../utils/exportExcel");
 
 const { PreRegistration, OtpVerification } = db;
 
@@ -182,6 +183,40 @@ exports.getPreRegistrationById = async (req, res) => {
             status: "error",
             message: "Failed to fetch registration",
             error: error.message
+        });
+    }
+};
+
+exports.exportPreRegistrations = async (req, res) => {
+    try {
+        const registrations = await PreRegistration.findAll();
+
+        const records = registrations.map((reg, index) => ({
+            SI: index + 1,
+            Name: reg.name,
+            Country: reg.country,
+            Email: reg.email,
+            phone: reg.phone
+        }));
+
+        await exportExcelFile(res, {
+            fileName: "Pre-Registrations",
+            sheetName: "Pre-Registrations",
+            columns: [
+                { header: "SI", key: "SI" },
+                { header: "Name", key: "Name" },
+                { header: "Country", key: "Country" },
+                { header: "Email", key: "Email" },
+                { header: "Phone", key: "Phone" }
+            ],
+            records,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: "Failed to export Pre-Registrations",
+            error: error.message,
         });
     }
 };

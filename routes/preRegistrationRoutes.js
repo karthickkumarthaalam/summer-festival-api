@@ -4,6 +4,7 @@ const preRegistrationController = require("../controllers/preRegistrationControl
 
 router.post("/send-otp", preRegistrationController.sendOtp);
 router.post("/verify-and-register", preRegistrationController.createPreRegistration);
+router.get("/export", preRegistrationController.exportPreRegistrations);
 router.get("/", preRegistrationController.getAllPreRegistration);
 router.get("/:id", preRegistrationController.getPreRegistrationById);
 

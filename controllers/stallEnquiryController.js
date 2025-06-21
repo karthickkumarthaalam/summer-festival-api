@@ -1,6 +1,7 @@
 const db = require("../models");
 const { Op } = require("sequelize");
 const pagination = require("../utils/pagination");
+const exportExcelFile = require("../utils/exportExcel");
 
 const { StallEnquiry } = db;
 
@@ -141,6 +142,46 @@ exports.updateStatus = async (req, res) => {
             status: "error",
             message: "Unable to update enquiry status",
             error: error.message
+        });
+    }
+};
+
+exports.exportStallEnquires = async (req, res) => {
+    try {
+        const enquiries = await StallEnquiry.findAll();
+
+        const records = enquiries.map((enq, index) => ({
+            SI: index + 1,
+            "Shop Name": enq.shop_name,
+            "Person Name": enq.person_name,
+            Email: enq.email,
+            Phone: enq.phone,
+            Category: enq.category,
+            Status: enq.status,
+            "Created At": enq.createdAt.toLocaleString(),
+        }));
+
+        await exportExcelFile(res, {
+            fileName: "Stall_Enquiries",
+            sheetName: "Enquiries",
+            columns: [
+                { header: "SI", key: "SI" },
+                { header: "Shop Name", key: "Shop Name" },
+                { header: "Person Name", key: "Person Name" },
+                { header: "Email", key: "Email" },
+                { header: "Phone", key: "Phone" },
+                { header: "Category", key: "Category" },
+                { header: "Status", key: "Status" },
+                { header: "Created At", key: "Created At" },
+            ],
+            records,
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: "Failed to export Stall Enquiries",
+            error: error.message,
         });
     }
 };
