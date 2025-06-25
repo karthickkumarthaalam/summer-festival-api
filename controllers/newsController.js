@@ -56,6 +56,16 @@ exports.getAllNews = async (req, res) => {
             };
         }
 
+        if (req.query.category) {
+            where.category = {
+                [Op.like]: `%${req.query.category}%`
+            };
+        }
+
+        if (req.query.exclude) {
+            where.id = { [Op.ne]: req.query.exclude };
+        }
+
         if (req.query.language) {
             where = {
                 ...where,
