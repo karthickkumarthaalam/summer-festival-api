@@ -29,6 +29,10 @@ module.exports = (sequlize, DataTypes) => {
             type: DataTypes.ENUM("pending", "resolved", "closed"),
             allowNull: false,
             defaultValue: "pending",
+        },
+        comment: {
+            type: DataTypes.TEXT,
+            allowNull: true
         }
     });
 

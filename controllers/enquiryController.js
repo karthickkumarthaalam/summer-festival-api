@@ -199,3 +199,31 @@ exports.exportEnquiries = async (req, res) => {
         });
     }
 };
+
+exports.updateComment = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { comment } = req.body;
+
+        if (!comment) {
+            return res.status(400).json({ status: "error", message: "comment is required" });
+        }
+
+        const enquiry = await Enquiry.findByPk(id);
+        if (!enquiry) {
+            return res.status(404).json({ status: "error", message: "Enquiry not found" });
+        }
+
+        enquiry.comment = comment;
+
+        await enquiry.save();
+
+        return res.status(200).json({
+            status: "success",
+            message: "comment posted"
+        });
+
+    } catch (error) {
+        res.status(500).json({ status: "error", message: "Failed to comment", error: error.message });
+    }
+};
