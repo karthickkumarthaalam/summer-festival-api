@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 const pagination = require("../utils/pagination");
 const exportExcelFile = require("../utils/exportExcel");
 
-const { Enquiry } = db;
+const { Enquiry, EnquiryReply } = db;
 
 exports.createEnquiry = async (req, res) => {
     try {
@@ -64,7 +64,13 @@ exports.getEnquiries = async (req, res) => {
         const result = await pagination(Enquiry, {
             page,
             limit,
-            where
+            where,
+            include: [
+                {
+                    model: EnquiryReply,
+                    as: "replies"
+                }
+            ]
         });
 
         res.status(200).json({
@@ -86,7 +92,14 @@ exports.getEnquryById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const enquiry = await Enquiry.findByPk(id);
+        const enquiry = await Enquiry.findByPk(id, {
+            include: [
+                {
+                    model: EnquiryReply,
+                    as: "replies"
+                }
+            ]
+        });
 
         if (!enquiry) {
             return res.status(404).json({

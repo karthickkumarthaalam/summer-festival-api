@@ -32,6 +32,13 @@ module.exports = (sequlize, DataTypes) => {
         }
     });
 
+    Enquiry.associate = (models) => {
+        Enquiry.hasMany(models.EnquiryReply, {
+            foreignKey: "enquiry_id",
+            as: "replies",
+            onDelete: "CASCADE"
+        });
+    };
 
     return Enquiry;
 };

@@ -34,6 +34,7 @@ db.ShowLineup = require("./showLineUp")(sequelize, Sequelize);
 db.Show = require("./shows")(sequelize, Sequelize);
 db.ShowArtist = require("./showArtist")(sequelize, Sequelize);
 db.Enquiry = require("./enquiry")(sequelize, Sequelize);
+db.EnquiryReply = require("./enquiryReply")(sequelize, Sequelize);
 db.StallEnquiry = require("./stallEnquiry")(sequelize, Sequelize);
 db.PreRegistration = require("./preRegistration")(sequelize, Sequelize);
 db.OtpVerification = require("./otpVerification")(sequelize, Sequelize);
