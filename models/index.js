@@ -38,6 +38,8 @@ db.EnquiryReply = require("./enquiryReply")(sequelize, Sequelize);
 db.StallEnquiry = require("./stallEnquiry")(sequelize, Sequelize);
 db.PreRegistration = require("./preRegistration")(sequelize, Sequelize);
 db.OtpVerification = require("./otpVerification")(sequelize, Sequelize);
+db.Attendee = require("./attendees")(sequelize, Sequelize);
+db.RefundEnquiry = require("./refundEnquiry")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {

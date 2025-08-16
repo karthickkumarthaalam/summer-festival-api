@@ -40,7 +40,6 @@ const sendOtpEmail = async (toEmail, toName, otp) => {
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log("Email sent:", info.messageId);
         return info;
     } catch (error) {
         console.error("ZeptoMail sending error:", error);
@@ -90,9 +89,55 @@ const sendEnquiryReplyEmail = async (toEmail, toName, subjectLine, replyMessage)
 };
 
 
+const sendRefundEnquiryEmail = async (toEmail, toName, subjectLine, replyMessage) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            host: "smtp.zeptomail.in",
+            port: 587,
+            secure: false,
+            auth: {
+                user: "emailapikey",
+                pass: process.env.ZEPTO_API_KEY,
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
+
+        const mailOptions = {
+            from: '"Thaalam Media" <noreply@thaalam.ch>',
+            to: toEmail,
+            subject: subjectLine,
+            html: `
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <h2>Hello ${toName},</h2>
+          <p>${replyMessage}</p>
+          <br>
+          <p>Regards,<br>Thaalam Media Team</p>
+          <img src="cid:logoimage" alt="Thaalam Media Logo" style="width: 150px; margin-top: 20px;" />
+        </div>
+      `,
+            attachments: [
+                {
+                    filename: "thaalam-logo.png",
+                    path: path.join(__dirname, "../public/assets/thaalam-logo.png"),
+                    cid: "logoimage",
+                },
+            ],
+        };
+
+        const info = await transporter.sendMail(mailOptions);
+        return info;
+    }
+    catch (error) {
+        console.error("Refund enquiry email sending error:", error);
+        throw new Error("Failed to send refund enquiry email");
+    }
+};
+
 const generateOTP = () => {
     return crypto.randomInt(100000, 999999).toString();
 };
 
 
-module.exports = { sendOtpEmail, sendEnquiryReplyEmail, generateOTP };
+module.exports = { sendOtpEmail, sendEnquiryReplyEmail, sendRefundEnquiryEmail, generateOTP };

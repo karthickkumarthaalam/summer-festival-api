@@ -23,9 +23,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 
-db.sequelize.sync().then(() => {
+db.sequelize.sync().then(async () => {
     console.log("Database synchronized (alter mode)");
+
+    const importAttendees = require("./utils/attendeesUpload");
+    await importAttendees();
 });
+
+
+// db.sequelize.sync().then(() => {
+//     console.log("Database synchronized (alter mode)");
+// });
 
 
 app.get("/", (req, res) => {
@@ -45,6 +53,7 @@ const showArtistRoutes = require("./routes/showArtistsRoutes");
 const enquiriesRoutes = require("./routes/enquiryRoutes");
 const stallEnquiryRoutes = require("./routes/stallEnquiryRoutes");
 const preRegistrationRoutes = require("./routes/preRegistrationRoutes");
+const refundEnquiryRoutes = require("./routes/refundEnquiryRoutes");
 
 app.use("/summer-festival/api/dashboard", dashboardRoutes);
 app.use("/summer-festival/api/auth", useRoutes);
@@ -60,6 +69,7 @@ app.use("/summer-festival/api/show-artist", showArtistRoutes);
 app.use("/summer-festival/api/enquiry", enquiriesRoutes);
 app.use("/summer-festival/api/stall-enquiry", stallEnquiryRoutes);
 app.use("/summer-festival/api/pre-registration", preRegistrationRoutes);
+app.use("/summer-festival/api/refund-enquiry", refundEnquiryRoutes);
 
 
 const PORT = process.env.PORT || 3000;
