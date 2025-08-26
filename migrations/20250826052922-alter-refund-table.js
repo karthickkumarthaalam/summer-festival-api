@@ -9,7 +9,7 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.changeColumn('refundenquiries', 'PAYMENT_MODE', {
+    await queryInterface.changeColumn('RefundEnquiries', 'PAYMENT_MODE', {
       type: Sequelize.ENUM('twint', 'bank', 'card'),
       allowNull: true,
     });
@@ -22,7 +22,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.changeColumn('refundenquiries', 'PAYMENT_MODE', {
+    await queryInterface.changeColumn('RefundEnquiries', 'PAYMENT_MODE', {
       type: Sequelize.ENUM('twint', 'bank'),
       allowNull: true,
     });

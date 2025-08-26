@@ -9,12 +9,13 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.addColumn('RefundEnquiries', 'REFUNDED_STATUS', {
-      type: Sequelize.ENUM('pending', 'verified', 'refunded'),
-      allowNull: false,
-      defaultValue: 'pending',
-      comment: 'Status of the refund enquiry' // 'pending', 'verified', 'refunded'
-    });
+    const table = await queryInterface.describeTable('RefundEnquiries');
+    if (!table.REFUNDED_STATUS) {
+      await queryInterface.addColumn('RefundEnquiries', 'REFUNDED_STATUS', {
+        type: Sequelize.ENUM('pending', 'approved', 'rejected'),
+        allowNull: true,
+      });
+    }
   },
 
   async down(queryInterface, Sequelize) {
