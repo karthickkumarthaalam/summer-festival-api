@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         PAYMENT_MODE: {
-            type: DataTypes.ENUM("twint", "bank"),
+            type: DataTypes.ENUM("twint", "bank", "card"),
             allowNull: true
         },
         TWINT_ACCOUNT: {
