@@ -57,6 +57,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.ENUM("pending", "verified", "refunded"),
             defaultValue: "pending",
             allowNull: false
+        },
+        USER_IP: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        USER_CITY: {
+            type: DataTypes.STRING,
+            allowNull: true
         }
     });
 

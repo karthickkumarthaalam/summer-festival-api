@@ -24,7 +24,9 @@ exports.createRefundEnquiry = async (req, res) => {
             IBAN_NUMBER,
             BIC_SWIFT_CODE,
             FULL_NAME,
-            TICKET_DESCRIPTION
+            TICKET_DESCRIPTION,
+            USER_IP,
+            USER_CITY,
         } = req.body;
 
         if (!ORDER_ID || !NAME || !EMAIL_ID || !PHONE_NUMBER || !REFUND_OR_CONTINUE) {
@@ -68,7 +70,9 @@ exports.createRefundEnquiry = async (req, res) => {
             FULL_NAME,
             TICKET_DESCRIPTION,
             REFUNDED_STATUS: "pending",
-            BILL_ATTACHMENT: uploadedUrl
+            BILL_ATTACHMENT: uploadedUrl,
+            USER_IP,
+            USER_CITY,
         });
 
         if (billsPath) await fs.unlink(billsPath).catch(() => { });
